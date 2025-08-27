@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Suivi des Modules Théologiques</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f4f4f9; }
+        h1 { color: #333; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+        th { background: #eee; }
+        .completed { background: #c8e6c9; }
+        .in-progress { background: #fff9c4; }
+        button { padding: 5px 10px; margin: 2px; }
+    </style>
+</head>
+<body>
+    <h1>📖 Suivi des Modules Théologiques</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Module</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="moduleTable">
+            <tr>
+                <td>Introduction à la Théologie</td>
+                <td class="status">En attente</td>
+                <td>
+                    <button onclick="updateStatus(this, 'En cours')">En cours</button>
+                    <button onclick="updateStatus(this, 'Terminé')">Terminé</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Doctrine du Salut</td>
+                <td class="status">En attente</td>
+                <td>
+                    <button onclick="updateStatus(this, 'En cours')">En cours</button>
+                    <button onclick="updateStatus(this, 'Terminé')">Terminé</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Christologie</td>
+                <td class="status">En attente</td>
+                <td>
+                    <button onclick="updateStatus(this, 'En cours')">En cours</button>
+                    <button onclick="updateStatus(this, 'Terminé')">Terminé</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        function updateStatus(button, status) {
+            let row = button.parentElement.parentElement;
+            let statusCell = row.querySelector('.status');
+            statusCell.textContent = status;
+            row.classList.remove('completed', 'in-progress');
+            if (status === 'En cours') {
+                row.classList.add('in-progress');
+            } else if (status === 'Terminé') {
+                row.classList.add('completed');
+            }
+        }
+    </script>
+</body>
+</html>
