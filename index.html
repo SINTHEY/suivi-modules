@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suivi des Modules Théologiques</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+.container { max-width: 1200px; margin: 0 auto; background: rgba(255, 255, 255, 0.95); border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); backdrop-filter: blur(10px); overflow: hidden; }
+.header { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 30px; text-align: center; }
+.header h1 { font-size: 2.5em; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+.header p { font-size: 1.1em; opacity: 0.9; }
+.content { padding: 30px; }
+.info-card { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 25px; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 10px 20px rgba(240,147,251,0.3); }
+.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+.info-item { display: flex; flex-direction: column; }
+.info-item label { font-weight: bold; margin-bottom: 8px; font-size: 0.9em; }
+.info-item input, .info-item select { padding: 12px 15px; border: none; border-radius: 10px; font-size: 1em; background: rgba(255,255,255,0.2); color: white; backdrop-filter: blur(10px); }
+.info-item input::placeholder { color: rgba(255,255,255,0.7); }
+.info-item input:focus, .info-item select:focus { outline: none; background: rgba(255,255,255,0.3); }
+.stats-card { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); padding: 20px; border-radius: 15px; margin-bottom: 30px; text-align: center; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 20px; }
+.stat-item { background: rgba(255,255,255,0.7); padding: 15px; border-radius: 10px; }
+.stat-number { font-size: 2em; font-weight: bold; color: #333; }
+.stat-label { font-size: 0.9em; color: #666; margin-top: 5px; }
+.controls { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 25px; border-radius: 15px; margin-bottom: 30px; display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+.controls input { flex: 1; min-width: 200px; padding: 12px 15px; border: none; border-radius: 10px; font-size: 1em; background: rgba(255,255,255,0.8); }
+.btn { padding: 12px 20px; border: none; border-radius: 10px; font-size: 1em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-block; }
+.btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
+.btn-danger { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); color: #333; }
+.btn-danger:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,154,158,0.4); }
+.btn-success { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #333; }
+.btn-success:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(168,237,234,0.4); }
+.table-container { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+table { width: 100%; border-collapse: collapse; }
+th { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; text-align: left; font-weight: bold; font-size: 1.1em; }
+td { padding: 15px 20px; border-bottom: 1px solid #f0f0f0; }
+tr:hover { background: rgba(102,126,234,0.05); }
+.status-badge { padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 0.9em; display: inline-block; min-width: 100px; text-align: center; }
+.status-nonvalide { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); color: #333; }
+.status-encours { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); color: #333; }
+.status-valide { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #333; }
+.actions { display: flex; gap: 10px; }
+.progress-bar { width: 100%; height: 20px; background: rgba(255,255,255,0.3); border-radius: 10px; overflow: hidden; margin-top: 15px; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%); transition: width 0.5s ease; }
+.progress-text { text-align: center; margin-top: 5px; font-size: 0.9em; opacity: 0.8; }
+@media (max-width: 768px) {
+    .content { padding: 20px; }
+    .controls { flex-direction: column; }
+    .controls input { min-width: 100%; }
+    .actions { flex-direction: column; }
+    table { font-size: 0.9em; }
+    th, td { padding: 10px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>📘 Suivi des Modules Théologiques</h1>
+<p>Gérez et suivez votre progression académique</p>
+</div>
+
+<div class="content">
+<div class="info-card">
+<h2>Informations Étudiant</h2>
+<div class="info-grid">
+<div class="info-item">
+<label for="nomEtudiant">Nom Complet</label>
+<input type="text" id="nomEtudiant" placeholder="Nom Prénom" oninput="sauvegarderNom()">
+</div>
+<div class="info-item">
+<label for="niveauSelect">Niveau d'Études</label>
+<select id="niveauSelect" onchange="sauvegarderNiveau()">
+<option value="CT">CT (Certificat en Théologie)</option>
+<option value="BT">BT (Baccalauréat en Théologie)</option>
+<option value="LICENSE">LICENCE en Théologie</option>
+<option value="MAITRISE">MAÎTRISE en Théologie</option>
+</select>
+</div>
+<div class="info-item">
+<label for="anneeCours">Année en Cours</label>
+<input type="number" id="anneeCours" value="2025" oninput="sauvegarderAnnee()">
+</div>
+<div class="info-item">
+<label for="finFormation">Fin de Formation</label>
+<input type="number" id="finFormation" value="2026" oninput="sauvegarderFinFormation()">
+</div>
+</div>
+<div class="progress-bar">
+<div class="progress-fill" id="progressFill"></div>
+</div>
+<div class="progress-text" id="progressText">0% complété</div>
+</div>
+
+<div class="stats-card">
+<div class="stats-grid">
+<div class="stat-item">
+<div class="stat-number" id="totalModules">0</div>
+<div class="stat-label">Total Modules</div>
+</div>
+<div class="stat-item">
+<div class="stat-number" id="modulesValides">0</div>
+<div class="stat-label">Modules Validés</div>
+</div>
+<div class="stat-item">
+<div class="stat-number" id="modulesEnCours">0</div>
+<div class="stat-label">En Cours</div>
+</div>
+<div class="stat-item">
+<div class="stat-number" id="modulesRestants">0</div>
+<div class="stat-label">Restants</div>
+</div>
+</div>
+</div>
+
+<div class="controls">
+<input type="text" id="newModule" placeholder="Nom du nouveau module">
+<button class="btn btn-primary" onclick="ajouterModule()">+ Ajouter Module</button>
+<button class="btn btn-success" onclick="reinitialiserModules()">↺ Réinitialiser</button>
+</div>
+
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Statut</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody id="tbodyModules">
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<script>
+const modulesCommuns = [
+"Introduction à la Bible","Sectologie","Évangélisation","Théologie Systématique","Herméneutique","Homiletique","Éthique Chrétienne","Missiologie","Leadership Chrétien","Théologie Avancée","Histoire de l'Église","Apologétique"];
+
+function chargerModules() {
+let sauvegarde = sessionStorage.getItem("modules");
+let tbody = document.getElementById("tbodyModules");
+tbody.innerHTML = "";
+let data = sauvegarde ? JSON.parse(sauvegarde) : [];
+if (data.length === 0) data = modulesCommuns.map(m => ({ nom: m, statut: "nonvalide" }));
+data.forEach(module => { ajouterLigneModule(module.nom, module.statut); });
+mettreAJourStatistiques();
+}
+
+function ajouterLigneModule(nom, statut = "nonvalide") {
+let tbody = document.getElementById("tbodyModules");
+let tr = document.createElement("tr");
+tr.innerHTML = `
+<td><strong>${nom}</strong></td>
+<td><span class="status-badge status-${statut}">${statutTexte(statut)}</span></td>
+<td>
+<div class="actions">
+<button class="btn btn-success" onclick="changerStatut(this)">Changer</button>
+<button class="btn btn-danger" onclick="supprimerModule(this)">Supprimer</button>
+</div>
+</td>`;
+tbody.appendChild(tr);
+}
+
+function statutTexte(statut) {
+switch(statut) { case "encours": return "En cours"; case "valide": return "Validé"; default: return "Non validé"; }
+}
+
+function changerStatut(btn) {
+let badge = btn.closest('tr').querySelector('.status-badge');
+let currentStatus = badge.className.split(' ').find(cls => cls.startsWith('status-')).split('-')[1];
+let newStatus;
+switch(currentStatus) { case "nonvalide": newStatus = "encours"; break; case "encours": newStatus = "valide"; break; default: newStatus = "nonvalide"; }
+badge.className = `status-badge status-${newStatus}`;
+badge.textContent = statutTexte(newStatus);
+sauvegarderModules();
+mettreAJourStatistiques();
+}
+
+function ajouterModule() {
+let nom = document.getElementById("newModule").value.trim();
+if (nom === "") { alert("Veuillez entrer un nom de module."); return; }
+let modulesExistants = Array.from(document.querySelectorAll("#tbodyModules tr td:first-child")).map(td => td.textContent.trim().toLowerCase());
+if (modulesExistants.includes(nom.toLowerCase())) { alert("Ce module existe déjà."); return; }
+ajouterLigneModule(nom);
+document.getElementById("newModule").value = "";
+sauvegarderModules();
+mettreAJourStatistiques();
+}
+
+function supprimerModule(btn) {
+if (confirm("Êtes-vous sûr de vouloir supprimer ce module ?")) {
+let tr = btn.closest('tr'); tr.remove(); sauvegarderModules(); mettreAJourStatistiques(); }
+}
+
+function reinitialiserModules() {
+if (confirm("Êtes-vous sûr de vouloir réinitialiser tous les modules ?")) { sessionStorage.removeItem("modules"); chargerModules(); }
+}
+
+function mettreAJourStatistiques() {
+let total = document.querySelectorAll("#tbodyModules tr").length;
+let valides = document.querySelectorAll("#tbodyModules .status-valide").length;
+let encours = document.querySelectorAll("#tbodyModules .status-encours").length;
+let restants = total - valides;
+document.getElementById("totalModules").textContent = total;
+document.getElementById("modulesValides").textContent = valides;
+document.getElementById("modulesEnCours").textContent = encours;
+document.getElementById("modulesRestants").textContent = restants;
+let pourcentage = total > 0 ? Math.round((valides / total) * 100) : 0;
+document.getElementById("progressFill").style.width = pourcentage + "%";
+document.getElementById("progressText").textContent = pourcentage + "% complété";
+}
+
+function sauvegarderModules() {
+let lignes = document.querySelectorAll("#tbodyModules tr"); let data = [];
+lignes.forEach(tr => { let nom = tr.cells[0].textContent.trim(); let statutClass = tr.querySelector('.status-badge').className; let statut = statutClass.split(' ').find(cls => cls.startsWith('status-')).split('-')[1]; data.push({ nom, statut }); });
+sessionStorage.setItem("modules", JSON.stringify(data));
+}
+
+function sauvegarderNiveau() { sessionStorage.setItem("niveau", document.getElementById("niveauSelect").value); }
+function sauvegarderNom() { sessionStorage.setItem("nomEtudiant", document.getElementById("nomEtudiant").value); }
+function sauvegarderAnnee() { sessionStorage.setItem("anneeCours", document.getElementById("anneeCours").value); }
+function sauvegarderFinFormation() { sessionStorage.setItem("finFormation", document.getElementById("finFormation").value); }
+
+function chargerDonnees() {
+let nom = sessionStorage.getItem("nomEtudiant"); if (nom) document.getElementById("nomEtudiant").value = nom;
+let niveau = sessionStorage.getItem("niveau"); if (niveau) document.getElementById("niveauSelect").value = niveau;
+let annee = sessionStorage.getItem("anneeCours"); if (annee) document.getElementById("anneeCours").value = annee;
+let fin = sessionStorage.getItem("finFormation"); if (fin) document.getElementById("finFormation").value = fin;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+document.getElementById('newModule').addEventListener('keypress', function(e) {
+if (e.key === 'Enter') ajouterModule();
+});
+});
+
+window.onload = () => { chargerDonnees(); chargerModules(); }
+</script>
+</body>
+</html>
