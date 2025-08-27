@@ -1,0 +1,49 @@
+/* assets/style.css */
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+  margin: 0;
+  padding: 20px;
+}
+header, footer {
+  text-align: center;
+  background: #007bff;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+}
+.infos, .ajout {
+  margin: 20px 0;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+label { font-weight: bold; }
+input, select, button {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+button {
+  background: #007bff;
+  color: white;
+  cursor: pointer;
+}
+button:hover {
+  background: #0056b3;
+}
+#modulesTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: white;
+}
+#modulesTable th, #modulesTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+.validé { background: #d4edda; color: #155724; }
+.encours { background: #fff3cd; color: #856404; }
+.nonvalidé { background: #f8d7da; color: #721c24; }
+
